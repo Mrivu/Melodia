@@ -1,0 +1,5 @@
+List of status ID:s
+
+0: No status effect
+1: Daze - Opponent loses turn
+2: Voltage - DOT status to opponent

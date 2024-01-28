@@ -1,0 +1,22 @@
+To Do:
+
+--- Combat Demo ---
+
+[X] Add HP and Flow display
+[X] Add character1 and enemy1 stats
+[X] Complete ability functioning
+[X] Add Enemy AI
+[X] Add status tokens
+[X] Add ability explanation
+[X] Add multiple characters and enemies
+[X] Add melody bar
+[X] Add working flow
+[X] Add dmg and status display on hit
+[X] Add flow animation
+[] Add other Abilities and player status effects
+[] Add animations
+[] Add turn counters
+[X] Get all data from Gamedata.cs
+
+--- Combat Demo: Complete ---
+
