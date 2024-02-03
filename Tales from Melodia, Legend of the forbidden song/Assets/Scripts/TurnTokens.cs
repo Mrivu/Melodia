@@ -12,7 +12,7 @@ public class TurnTokens : MonoBehaviour
 
     private List<GameObject> initializedTokens = new List<GameObject>();
 
-    public void UpdateTokens() //Set combathandler removal type combat list
+    public void UpdateTokens() //problem of start offset may lay in animation location during update tokens, set update tpkens earlier
     {
         Debug.Log("Update tokens");
         foreach (GameObject token in initializedTokens)
@@ -28,11 +28,11 @@ public class TurnTokens : MonoBehaviour
             {
                 if (obj.GetComponent<Enemy>() != null)
                 {
-                    xPos = obj.transform.position.x - 2.75f;
+                    xPos = obj.GetComponent<Enemy>().podiumPosition.x - 1.25f;
                 }
                 else
                 {
-                    xPos = obj.transform.position.x + 2.75f;
+                    xPos = obj.GetComponent<Character>().podiumPosition.x + 1.25f;
                 }
             }
 

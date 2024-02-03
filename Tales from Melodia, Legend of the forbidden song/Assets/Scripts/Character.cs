@@ -23,6 +23,8 @@ public class Character : MonoBehaviour
     public int FlowDur = 0;
     public bool InFlow = false;
 
+    public Vector2 podiumPosition;
+
     public bool hasTurn;
 
     private void Awake()

@@ -45,6 +45,8 @@ public class Enemy : MonoBehaviour
 
     public bool Dazed = false;
 
+    public Vector2 podiumPosition;
+
     public bool hasTurn;
 
     //ID,STRENGHT,DURATION

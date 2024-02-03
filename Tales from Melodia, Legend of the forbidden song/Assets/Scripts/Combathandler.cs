@@ -338,6 +338,8 @@ public class Combathandler : MonoBehaviour
                             //when done:
                             playercanact = false;
                             playerhasacted = false;
+                            CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
+                            turnTokenManager.UpdateTokens();
                             combatanimator.AnimateCombat(character, target, character.gameObject, target.gameObject, true, damage, statusResist);
                             turnnum++;
                         }
@@ -346,11 +348,11 @@ public class Combathandler : MonoBehaviour
                             Debug.Log("Miss");
                             playercanact = false;
                             playerhasacted = false;
+                            CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
+                            turnTokenManager.UpdateTokens();
                             combatanimator.AnimateCombat(character, target, character.gameObject, target.gameObject, false, damage, statusResist);
                             turnnum++;
                         }
-                        CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
-                        turnTokenManager.UpdateTokens();
                     }
                     character.hasTurn = false;
                 }
@@ -377,6 +379,8 @@ public class Combathandler : MonoBehaviour
                         if (enemyintrun.Dazed)
                         {
                             enemyintrun.CheckStatus();
+                            CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
+                            turnTokenManager.UpdateTokens();
                             Debug.Log(enemyintrun + " is dazed ------------------------------------");
                         }
                         else
@@ -384,11 +388,11 @@ public class Combathandler : MonoBehaviour
                             enemyintrun.CheckStatus();
                             //Enemy AI
                             enemyintrun.statustokenHandler.UpdateTokens();
+                            CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
+                            turnTokenManager.UpdateTokens();
 
                             aihandler.AIability(enemyintrun);
                             enemyintrun.hasTurn = false;
-                            CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
-                            turnTokenManager.UpdateTokens();
                         }
                     }
                     else
