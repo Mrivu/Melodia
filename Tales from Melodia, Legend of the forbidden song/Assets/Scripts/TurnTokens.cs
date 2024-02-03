@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class TurnTokens : MonoBehaviour
 {
@@ -13,40 +14,30 @@ public class TurnTokens : MonoBehaviour
 
     public void UpdateTokens() //Set combathandler removal type combat list
     {
-        foreach (GameObject initToken in initializedTokens)
+        Debug.Log("Update tokens");
+        foreach (GameObject token in initializedTokens)
         {
-            Destroy(initToken);
+            Destroy(token);
         }
         initializedTokens.Clear();
-        float val = 0;
-
-        foreach (var entry in combathandler.CombatOrder)
+        float xPos = 0;
+        foreach (KeyValuePair<string, int> len in combathandler.CombatOrder)
         {
-            float xPos;
-            GameObject obj = GameObject.Find(entry.Key);
+            GameObject obj = GameObject.Find(len.Key);
             if (obj != null)
             {
                 if (obj.GetComponent<Enemy>() != null)
                 {
-                    xPos = obj.GetComponent<Enemy>().transform.position.x;
+                    xPos = obj.transform.position.x - 2.75f;
                 }
                 else
                 {
-                    xPos = obj.GetComponent<Character>().transform.position.x;
+                    xPos = obj.transform.position.x + 2.75f;
                 }
-                foreach (GameObject previoustoken in initializedTokens)
-                {
-                    if (xPos == previoustoken.transform.position.x)
-                    { // GLitch with token movings
-                        previoustoken.transform.position = new Vector3(previoustoken.transform.position.x - 0.25f * val, previoustoken.transform.position.y, previoustoken.transform.position.z);
-                        val += 1;
-                        xPos += 0.25f * val;
-                    }
-                    
-                }
-                val = 0;
-                initializedTokens.Add(Instantiate(turnToken, new Vector3(xPos, -1.95f, 0f), new Quaternion(0, 0, 0, 0)));
             }
+
+            GameObject initToken = Instantiate(turnToken, new Vector3(xPos, -1.95f, 0f), new Quaternion(0, 0, 0, 0));
+            initializedTokens.Add(initToken);
         }
     }
 }

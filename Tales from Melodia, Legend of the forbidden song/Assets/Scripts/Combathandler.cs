@@ -17,7 +17,7 @@ public class Combathandler : MonoBehaviour
 
     private AbilityExplanation abilityExplanation;
 
-    [SerializeField] TurnTokens turnTokenManager;
+    private TurnTokens turnTokenManager;
 
     private MelodyHandler melodyhandler;
 
@@ -92,6 +92,8 @@ public class Combathandler : MonoBehaviour
 
         melodyhandler = GameObject.Find("Melody").GetComponent<MelodyHandler>();
 
+        turnTokenManager = GameObject.Find("TurnTokenManager").GetComponent<TurnTokens>();
+
         Select_target.SetActive(false);
     }
 
@@ -110,22 +112,22 @@ public class Combathandler : MonoBehaviour
     void Update()
     {
         //Combat
-        if (turnnum < (CombatOrder.Count()))
+        if (CombatOrder.Count() > 0)
         {
             if (!OngoingAnimation)
             {
                 //Handle Player
-                if (CombatOrder.ElementAt(turnnum).Key == "Character1" || CombatOrder.ElementAt(turnnum).Key == "Character2" || CombatOrder.ElementAt(turnnum).Key == "Character3")
+                if (CombatOrder.ElementAt(0).Key == "Character1" || CombatOrder.ElementAt(0).Key == "Character2" || CombatOrder.ElementAt(0).Key == "Character3")
                 {
-                    if (CombatOrder.ElementAt(turnnum).Key == "Character1")
+                    if (CombatOrder.ElementAt(0).Key == "Character1")
                     {
                         character = GameObject.Find("Character1").GetComponent<Character>();
                     }
-                    else if (CombatOrder.ElementAt(turnnum).Key == "Character2")
+                    else if (CombatOrder.ElementAt(0).Key == "Character2")
                     {
                         character = GameObject.Find("Character2").GetComponent<Character>();
                     }
-                    else if (CombatOrder.ElementAt(turnnum).Key == "Character3")
+                    else if (CombatOrder.ElementAt(0).Key == "Character3")
                     {
                         character = GameObject.Find("Character3").GetComponent<Character>();
                     }
@@ -347,6 +349,8 @@ public class Combathandler : MonoBehaviour
                             combatanimator.AnimateCombat(character, target, character.gameObject, target.gameObject, false, damage, statusResist);
                             turnnum++;
                         }
+                        CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
+                        turnTokenManager.UpdateTokens();
                     }
                     character.hasTurn = false;
                 }
@@ -356,15 +360,15 @@ public class Combathandler : MonoBehaviour
                 {
                     if (time <= 0f)
                     {
-                        if (CombatOrder.ElementAt(turnnum).Key == "Enemy1")
+                        if (CombatOrder.ElementAt(0).Key == "Enemy1")
                         {
                             enemyintrun = GameObject.Find("Enemy1").GetComponent<Enemy>();
                         }
-                        else if (CombatOrder.ElementAt(turnnum).Key == "Enemy2")
+                        else if (CombatOrder.ElementAt(0).Key == "Enemy2")
                         {
                             enemyintrun = GameObject.Find("Enemy2").GetComponent<Enemy>();
                         }
-                        else if (CombatOrder.ElementAt(turnnum).Key == "Enemy3")
+                        else if (CombatOrder.ElementAt(0).Key == "Enemy3")
                         {
                             enemyintrun = GameObject.Find("Enemy3").GetComponent<Enemy>();
                         }
@@ -383,6 +387,8 @@ public class Combathandler : MonoBehaviour
 
                             aihandler.AIability(enemyintrun);
                             enemyintrun.hasTurn = false;
+                            CombatOrder.Remove(CombatOrder.ElementAt(0).Key);
+                            turnTokenManager.UpdateTokens();
                         }
                     }
                     else
@@ -399,7 +405,6 @@ public class Combathandler : MonoBehaviour
             round++;
             roundtext.text = "Round " + round;
             NewOrder();
-            turnTokenManager.UpdateTokens();
         }
     }
 
@@ -437,7 +442,7 @@ public class Combathandler : MonoBehaviour
             CombatMembers.Add("Enemy3", (Random.Range(0, 8) + Enemy3.Speed));
         }
 
-        foreach(KeyValuePair<string,int> len in CombatMembers.OrderBy(key => key.Value))
+        foreach(KeyValuePair<string,int> len in CombatMembers.OrderByDescending(key => key.Value))
         {
             CombatOrder.Add(len.Key, len.Value);
         }
@@ -453,6 +458,8 @@ public class Combathandler : MonoBehaviour
                 GameObject.Find(member.Key).GetComponent<Enemy>().hasTurn = true;
             }
         }
+
+        turnTokenManager.UpdateTokens();
     }
 
     public void AbilityUsed(string Color, string Name,int Mindmg,int Maxdmg,float Hitchance,int StatusID,float StatusChance,int StatusStrenght,int StatusDuration,int Flowbonus,bool Hitrank1,bool Hitrank2,bool Hitrank3,bool Hit1and2,bool Hit2and3,bool Hitall)
